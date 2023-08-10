@@ -1,0 +1,36 @@
+     1                                  section .data
+     2 00000000 507265737320456E74-     ExitMsg db "Press Enter to Exit",10
+     2 00000009 657220746F20457869-
+     2 00000012 740A               
+     3                                  lenExit equ $-ExitMsg
+     4 00000014 E2FF                    A dw -30
+     5 00000016 1500                    B dw 21
+     6                                  
+     7                                  section .bss
+     8 00000000 <res 0000000A>          InBuf resb 10
+     9                                  lenIn equ $-InBuf
+    10 0000000A <res 00000004>          X resd 1
+    11                                  
+    12                                  section .text
+    13                                  global _start
+    14                                  _start:
+    15 00000000 A1[14000000]            mov EAX, [A]
+    16 00000005 83C005                  add EAX, 5
+    17 00000008 2B05[16000000]          sub EAX, [B]
+    18 0000000E A3[0A000000]            mov [X], EAX
+    19 00000013 B804000000              mov eax, 4
+    20 00000018 BB01000000              mov ebx, 1
+    21 0000001D B9[00000000]            mov ecx, ExitMsg
+    22 00000022 BA14000000              mov edx, lenExit
+    23 00000027 CD80                    int 80h
+    24                                  ; read
+    25 00000029 B803000000              mov eax, 3 
+    26 0000002E BB00000000              mov ebx, 0
+    27 00000033 B9[00000000]            mov ecx, InBuf
+    28 00000038 BA0A000000              mov edx, lenIn
+    29 0000003D CD80                    int 80h
+    30                                  ; exit
+    31 0000003F B801000000              mov eax, 1
+    32 00000044 31DB                    xor ebx, ebx
+    33 00000046 CD80                    int 80h
+    34                                   
